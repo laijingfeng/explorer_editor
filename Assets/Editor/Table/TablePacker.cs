@@ -462,10 +462,10 @@ public partial class TablePacker : EditorWindow
 
         dir = Directory.GetCurrentDirectory();
 
-        tablePath = dir + @"\common\table\";
-        table_outputPath = dir + @"\common\table_output\";
-        table_toolsPath = dir + @"\common\table_tools\";
-        protoPath = dir + @"\common\proto\";
+        tablePath = dir + string.Format(@"\{0}\table\", m_strTableFileName);
+        table_outputPath = dir + string.Format(@"\{0}\table_output\", m_strTableFileName);
+        table_toolsPath = dir + string.Format(@"\{0}\table_tools\", m_strTableFileName);
+        protoPath = dir + string.Format(@"\{0}\proto\", m_strTableFileName);
 
 #if UNITY_WEBPLAYER
         table_outputStreamingPath = dir + @"\AssetBundles\Table\";
@@ -578,7 +578,7 @@ public partial class TablePacker : EditorWindow
     private static void DoComplieTableProtoFile(bool bFromWindow = false)
     {
         dir = Directory.GetCurrentDirectory();
-        protoPath = dir + @"\common\proto\";
+        protoPath = dir + string.Format(@"\{0}\proto\", m_strTableFileName);
 
         Directory.SetCurrentDirectory(protoPath);
 
