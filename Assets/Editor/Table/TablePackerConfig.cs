@@ -10,5 +10,5 @@ public partial class TablePacker : EditorWindow
     /// <summary>
     /// 表格相关内容所在目录
     /// </summary>
-    private static string m_strTablePath = Application.dataPath + "/../common/"; 
+    private static string m_strTablePath = Application.dataPath + "/../table/"; 
 }
