@@ -21,19 +21,15 @@ public partial class AssetBundleBuilder : EditorWindow
         "Data",
     };
 
-#if UNITY_WEBPLAYER
     /// <summary>
-    /// <para>目标目录</para>
-    /// <para>用来替换"Assets/[m_strCurrentDataFolderName]/"</para>
+    /// 客户端地址
     /// </summary>
-    private string m_strDesPath = "Assets/../AssetBundles/";
-#else
+    private string m_strClientPath = "../explorer_client/";
+
     /// <summary>
-    /// <para>目标目录</para>
-    /// <para>用来替换"Assets/[m_strCurrentDataFolderName]/"</para>
+    /// 游戏端地址
     /// </summary>
-    private string m_strDesPath = "Assets/../AssetBundles/";
-#endif
+    private string m_strGamePath = "../explorer_game/";
 
     #endregion
 

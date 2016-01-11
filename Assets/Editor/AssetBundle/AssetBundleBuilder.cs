@@ -79,26 +79,35 @@ public partial class AssetBundleBuilder : EditorWindow
     /// <summary>
     /// 创建
     /// </summary>
-    /// <param name="srcPath"></param>
+    /// <param name="srcPath">是相对工程的地址，Assets/xxx</param>
     /// <param name="prefab"></param>
     private void Build(string srcPath, UnityEngine.Object prefab)
     {
-        string desPath = srcPath.Replace("Assets/" + m_strCurrentDataFolderName + "/", m_strDesPath);
-        string desDirectory = Path.GetDirectoryName(desPath);
+        string bundlePath = srcPath.Replace("Assets/" + m_strCurrentDataFolderName + "/", "AssetBundles/");
+        bundlePath = Path.GetDirectoryName(bundlePath);
 
-        if (!Directory.Exists(desDirectory))
+        if (Directory.Exists(m_strGamePath) == false)
         {
-            Directory.CreateDirectory(desDirectory);
+            UnityEngine.Debug.LogError("游戏端不存在");
+            return;
         }
+
+        string prfabName = prefab.name;
+        string gameDirectory = m_strGamePath + bundlePath;
+
+        if (!Directory.Exists(gameDirectory))
+        {
+            Directory.CreateDirectory(gameDirectory);
+        }
+
+        string gamePath = gameDirectory + "/" +  prfabName + ".unity3d";
 
         if (srcPath.Contains(".mp4"))
         {
-            File.Copy(srcPath, desPath, true);
+            File.Copy(srcPath, gamePath, true);
         }
         else
         {
-            desPath = desDirectory + "/" + prefab.name + ".unity3d";
-
 #if UNITY_WEBPLAYER
             BuildTarget buildTarget = BuildTarget.WebPlayer;
 #elif UNITY_IPHONE
@@ -112,13 +121,27 @@ public partial class AssetBundleBuilder : EditorWindow
             if (!BuildPipeline.BuildAssetBundle(
                 prefab,
                 null,
-                desPath,
+                gamePath,
                 BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets | BuildAssetBundleOptions.DeterministicAssetBundle,
                 buildTarget
                 ))
             {
                 UnityEngine.Debug.LogError("BuildFail name = " + prefab.name);
             }
+        }
+
+        if (Directory.Exists(m_strClientPath))
+        {
+            string clientDirectory = m_strClientPath + bundlePath;
+
+            if (!Directory.Exists(clientDirectory))
+            {
+                Directory.CreateDirectory(clientDirectory);
+            }
+
+            string clientPath = clientDirectory + "/" + prfabName + ".unity3d";
+
+            File.Copy(gamePath, clientPath, true);
         }
     }
 
