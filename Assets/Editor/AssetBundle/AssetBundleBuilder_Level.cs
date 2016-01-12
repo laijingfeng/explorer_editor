@@ -83,13 +83,13 @@ public partial class AssetBundleBuilder : EditorWindow
 
         level.m_listTrigger.Clear();
 
-        int id = 0;
+        int uniqueID = 0;
 
         TriggerTimer[] timers = goTrigger.GetComponentsInChildren<TriggerTimer>(true);
 
         foreach (TriggerTimer tmp in timers)
         {
-            tmp.m_iUniqueID = id++;
+            tmp.m_iUniqueID = ++uniqueID;
             level.m_listTrigger.Add(tmp);
         }
 
@@ -97,7 +97,7 @@ public partial class AssetBundleBuilder : EditorWindow
 
         foreach (TriggerRange tmp in rangs)
         {
-            tmp.m_iUniqueID = id++;
+            tmp.m_iUniqueID = ++uniqueID;
             if (tmp.transform.childCount > 0)
             {
                 tmp.m_strItemName = tmp.transform.GetChild(0).name;
@@ -111,13 +111,17 @@ public partial class AssetBundleBuilder : EditorWindow
 
         foreach (TriggerBoss tmp in bosses)
         {
-            //tmp.m_iUniqueID = id++;
-            tmp.m_strBossName = tmp.transform.GetChild(0).name;
-            //level.m_listTrigger.Add(tmp);
-            Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
+            tmp.m_iUniqueID = ++uniqueID;
+            if (tmp.transform.childCount > 0)
+            {
+                tmp.m_strBossName = tmp.transform.GetChild(0).name;
+                Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("TriggerBoss需要添加boss子结点 " + tmp.transform.name);
+            }
         }
-
-       // Util.DestroyAllChildrenImmediate(goTrigger);
 
         foreach (Transform t in level.transform)
         {
