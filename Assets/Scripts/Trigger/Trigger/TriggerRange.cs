@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 范围触发器
 /// </summary>
-public class TriggerRange : BaseTrigger
+public class TriggerRange : TriggerBase
 {
     /// <summary>
     /// 触发盒子
@@ -21,7 +21,7 @@ public class TriggerRange : BaseTrigger
     /// 初始化
     /// </summary>
     /// <param name="config"></param>
-    public override void Init(BaseTrigger config)
+    public override void Init(TriggerBase config)
     {
         base.Init(config);
 

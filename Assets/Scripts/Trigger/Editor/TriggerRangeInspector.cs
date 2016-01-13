@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 [CustomEditor(typeof(TriggerRange))]
-public class TriggerRangeInspector : BaseTriggerInspector
+public class TriggerRangeInspector : TriggerBaseInspector
 {
     /// <summary>
     /// 范围触发器

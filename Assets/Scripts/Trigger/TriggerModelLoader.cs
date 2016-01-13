@@ -9,14 +9,14 @@ public class TriggerModelLoader : MonoBehaviour
     /// <summary>
     /// 触发器
     /// </summary>
-    private BaseTrigger m_Trigger;
+    private TriggerBase m_Trigger;
 
     /// <summary>
     /// 获取
     /// </summary>
     /// <param name="trigger"></param>
     /// <returns></returns>
-    public static TriggerModelLoader Get(BaseTrigger trigger)
+    public static TriggerModelLoader Get(TriggerBase trigger)
     {
         TriggerModelLoader loader = null;
         if (trigger == null)

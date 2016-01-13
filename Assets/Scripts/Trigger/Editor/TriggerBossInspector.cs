@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 [CustomEditor(typeof(TriggerBoss))]
-public class TriggerBossInspector : BaseTriggerInspector
+public class TriggerBossInspector : TriggerBaseInspector
 {
     /// <summary>
     /// 绘制属性

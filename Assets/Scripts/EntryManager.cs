@@ -60,61 +60,30 @@ public class EntryManager : SingletonMono<EntryManager>
         go.transform.localPosition = Vector3.zero;
     }
 
-    public BaseTrigger CreateTrigger(BaseTrigger config)
-    {
-        GameObject go = new GameObject(string.Format("Trigger_{0}", config.m_iUniqueID));
-        go.transform.parent = transform;
-        go.transform.position = config.transform.position;
-
-        BaseTrigger tt = null;
-
-        if (config is TriggerTimer)
-        {
-            tt = go.AddComponent<TriggerTimer>();
-        }
-        else if(config is TriggerRange)
-        {
-            tt = go.AddComponent<TriggerRange>();
-        }
-        else if (config is TriggerBoss)
-        {
-            tt = go.AddComponent<TriggerBoss>();
-        }
-
-        tt.Init(config);
-
-        return tt;
-    }
-
     /// <summary>
     /// 创建触发器
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public TriggerBase CreateTrigger(TriggerBaseConfig config)
+    public TriggerBase CreateTrigger(TriggerBase config)
     {
-        TriggerBase trigger = null;
-        GameObject go = new GameObject(string.Format("{0}_{1}", config.m_Type, config.m_iUniqueID));
+        GameObject go = new GameObject(string.Format("Trigger_{0}", config.m_iUniqueID));
         go.transform.parent = transform;
         go.transform.position = config.transform.position;
 
-        switch (config.m_Type)
+        TriggerBase trigger = null;
+
+        if (config is TriggerTimer)
         {
-            case TriggerBase.TriggerType.DeadTrigger:
-                {
-                    trigger = go.AddComponent<DeadTrigger>();
-                }
-                break;
-            case TriggerBase.TriggerType.RangeTrigger:
-                {
-                    trigger = go.AddComponent<RangeTrigger>();
-                }
-                break;
-            case TriggerBase.TriggerType.TimerTrigger:
-                {
-                    trigger = go.AddComponent<TimerTrigger>();
-                }
-                break;
+            trigger = go.AddComponent<TriggerTimer>();
+        }
+        else if(config is TriggerRange)
+        {
+            trigger = go.AddComponent<TriggerRange>();
+        }
+        else if (config is TriggerBoss)
+        {
+            trigger = go.AddComponent<TriggerBoss>();
         }
 
         trigger.Init(config);

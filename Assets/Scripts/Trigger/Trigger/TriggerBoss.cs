@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// Boss触发器
 /// </summary>
-public class TriggerBoss : BaseTrigger
+public class TriggerBoss : TriggerBase
 {
     /// <summary>
     /// Boss名称
@@ -15,7 +15,7 @@ public class TriggerBoss : BaseTrigger
     /// 初始化
     /// </summary>
     /// <param name="config"></param>
-    public override void Init(BaseTrigger config)
+    public override void Init(TriggerBase config)
     {
         base.Init(config);
 

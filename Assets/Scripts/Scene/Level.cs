@@ -39,12 +39,12 @@ public class Level : MonoBehaviour
     /// <summary>
     /// 触发器
     /// </summary>
-    public List<BaseTrigger> m_listTrigger;
+    public List<TriggerBase> m_listTrigger;
 
     /// <summary>
     /// ID->BaseTrigger
     /// </summary>
-    private Dictionary<int, BaseTrigger> m_dicID2Trigger = new Dictionary<int, BaseTrigger>();
+    private Dictionary<int, TriggerBase> m_dicID2Trigger = new Dictionary<int, TriggerBase>();
 
     /// <summary>
     /// 初始化
@@ -55,30 +55,54 @@ public class Level : MonoBehaviour
     }
 
     /// <summary>
+    /// 触发器结束
+    /// </summary>
+    public delegate void OnTriggerFinish(TriggerBase trigger);
+
+    /// <summary>
+    /// 触发器结束事件
+    /// </summary>
+    public event OnTriggerFinish onTriggerFinish = null;
+
+    /// <summary>
+    /// 触发器结束
+    /// </summary>
+    /// <param name="trigger"></param>
+    private void OnTriggerDead(TriggerBase trigger)
+    {
+        if (onTriggerFinish != null)
+        {
+            onTriggerFinish(trigger);
+        }
+    }
+
+    /// <summary>
     /// 创建触发器
     /// </summary>
     private void CreateTrigger()
     {
-        BaseTrigger tt;
+        TriggerBase trigger;
         bool done = true;
         do
         {
             done = true;
-            foreach (BaseTrigger t in m_listTrigger)
+            foreach (TriggerBase config in m_listTrigger)
             {
-                if (t.m_Father == null)
+                if (config.m_Father == null)
                 {
-                    tt = EntryManager.Instance.CreateTrigger(t);
-                    m_dicID2Trigger.Add(tt.m_iUniqueID, tt);
+                    trigger = EntryManager.Instance.CreateTrigger(config);
+                    trigger.onTriggerFinish += OnTriggerDead;
+                    m_dicID2Trigger.Add(trigger.m_iUniqueID, trigger);
                 }
                 else
                 {
-                    BaseTrigger ff = null;
-                    if (m_dicID2Trigger.TryGetValue(t.m_iUniqueID, out ff))
+                    TriggerBase father = null;
+                    if (m_dicID2Trigger.TryGetValue(config.m_iUniqueID, out father))
                     {
-                        t.m_Father = ff;
-                        tt = EntryManager.Instance.CreateTrigger(t);
-                        m_dicID2Trigger.Add(tt.m_iUniqueID, tt);
+                        config.m_Father = father;
+                        trigger = EntryManager.Instance.CreateTrigger(config);
+                        trigger.onTriggerFinish += OnTriggerDead;
+                        m_dicID2Trigger.Add(trigger.m_iUniqueID, trigger);
                     }
                     else
                     {

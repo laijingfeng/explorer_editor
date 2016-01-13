@@ -101,10 +101,19 @@ public partial class AssetBundleBuilder : EditorWindow
             if (tmp.transform.childCount > 0)
             {
                 tmp.m_strItemName = tmp.transform.GetChild(0).name;
+
+                if (tmp.transform.childCount > 1)
+                {
+                    UnityEngine.Debug.LogWarning("可视TriggerRange只能添加一个item子结点 " + tmp.transform.name);
+                }
+
+                if (tmp.m_strItemName.Contains("item_") == false)
+                {
+                    UnityEngine.Debug.LogError("可视TriggerRange子结点需要是item " + tmp.transform.name);
+                }
+
                 Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
             }
-            //tmp.m_bcTriggerBox = tmp.transform.GetComponent<BoxCollider2D>();
-            //level.m_listTrigger.Add(tmp);
         }
 
         TriggerBoss[] bosses = goTrigger.GetComponentsInChildren<TriggerBoss>(true);
@@ -115,6 +124,17 @@ public partial class AssetBundleBuilder : EditorWindow
             if (tmp.transform.childCount > 0)
             {
                 tmp.m_strBossName = tmp.transform.GetChild(0).name;
+
+                if (tmp.transform.childCount > 1)
+                {
+                    UnityEngine.Debug.LogWarning("TriggerBoss只能添加一个boss子结点 " + tmp.transform.name);
+                }
+
+                if (tmp.m_strBossName.Contains("boss_") == false)
+                {
+                    UnityEngine.Debug.LogError("TriggerBoss子结点需要是boss " + tmp.transform.name);
+                }
+
                 Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
             }
             else
