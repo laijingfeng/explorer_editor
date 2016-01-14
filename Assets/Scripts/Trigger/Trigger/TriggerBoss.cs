@@ -24,10 +24,8 @@ public class TriggerBoss : TriggerBase
         m_strBossName = boss.m_strBossName;
     }
 
-    public override void Start()
+    void Awake()
     {
-        base.Start();
-
         if (this.transform.childCount > 0)
         {
             this.transform.GetChild(0).gameObject.SetActive(false);

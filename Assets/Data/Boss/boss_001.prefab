@@ -94,7 +94,7 @@ GameObject:
   - 95: {fileID: 9500000}
   m_Layer: 10
   m_Name: boss_001
-  m_TagString: Enemy
+  m_TagString: Boss_001
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  HP: 2
+  HP: 1
   deadEnemy: {fileID: 21300000, guid: bd1989b4e42a0454097f657dfb368bd8, type: 3}
   damagedEnemy: {fileID: 0}
   deathClips:

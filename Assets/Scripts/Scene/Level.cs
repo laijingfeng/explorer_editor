@@ -81,6 +81,7 @@ public class Level : MonoBehaviour
     /// </summary>
     private void CreateTrigger()
     {
+        m_dicID2Trigger.Clear();
         TriggerBase trigger;
         bool done = true;
         do

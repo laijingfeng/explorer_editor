@@ -146,9 +146,9 @@ public class Boss_001 : MonoBehaviour
         StartCoroutine("DelayNoticeTrigger");
 	}
 
-    void OnDispose()
+    void OnDestroy()
     {
-        if (m_TriggerBoss == null)
+        if (m_TriggerBoss != null)
         {
             m_TriggerBoss.OnFinish();
         }
@@ -161,8 +161,7 @@ public class Boss_001 : MonoBehaviour
     private IEnumerator DelayNoticeTrigger()
     {
         yield return new WaitForSeconds(0.5f);
-
-        if (m_TriggerBoss == null)
+        if (m_TriggerBoss != null)
         {
             m_TriggerBoss.OnFinish();
         }

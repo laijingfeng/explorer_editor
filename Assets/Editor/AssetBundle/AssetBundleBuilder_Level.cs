@@ -74,83 +74,105 @@ public partial class AssetBundleBuilder : EditorWindow
             return;
         }
 
-        GameObject goTrigger = Util.FindGo(level.gameObject, "Trigger");
+        ProcessTrigger(level);
 
-        if (goTrigger == null)
+        Transform playerPos = Util.FindCo<Transform>(level.transform, "Player");
+        if (playerPos != null)
         {
-            return;
+            level.m_PlayerPos = playerPos.position;
+            Util.DestroyAllChildrenImmediate(playerPos.gameObject);
         }
+    }
 
+    /// <summary>
+    /// 处理触发器
+    /// </summary>
+    /// <param name="level">关卡</param>
+    private void ProcessTrigger(Level level)
+    {
         level.m_listTrigger.Clear();
 
         int uniqueID = 0;
 
-        TriggerTimer[] timers = goTrigger.GetComponentsInChildren<TriggerTimer>(true);
+        TriggerBase[] triggers = level.GetComponentsInChildren<TriggerBase>(true);
 
-        foreach (TriggerTimer tmp in timers)
+        foreach (TriggerBase tmp in triggers)
         {
+            if (tmp is TriggerRange)
+            {
+                ProcessTriggerRange(tmp as TriggerRange);
+            }
+            else if (tmp is TriggerBoss)
+            {
+                ProcessTriggerBoss(tmp as TriggerBoss);
+            }
+
+            if (tmp.transform.childCount > 0)
+            {
+                Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
+            }
             tmp.m_iUniqueID = ++uniqueID;
+            tmp.enabled = false;
             level.m_listTrigger.Add(tmp);
         }
+    }
 
-        TriggerRange[] rangs = goTrigger.GetComponentsInChildren<TriggerRange>(true);
+    /// <summary>
+    /// 处理范围触发器
+    /// </summary>
+    /// <param name="tmp"></param>
+    private void ProcessTriggerRange(TriggerRange tmp)
+    {
+        BoxCollider2D bcd = tmp.transform.GetComponent<BoxCollider2D>();
 
-        foreach (TriggerRange tmp in rangs)
+        if (bcd == null)
         {
-            tmp.m_iUniqueID = ++uniqueID;
-            if (tmp.transform.childCount > 0)
-            {
-                tmp.m_strItemName = tmp.transform.GetChild(0).name;
-
-                if (tmp.transform.childCount > 1)
-                {
-                    UnityEngine.Debug.LogWarning("可视TriggerRange只能添加一个item子结点 " + tmp.transform.name);
-                }
-
-                if (tmp.m_strItemName.Contains("item_") == false)
-                {
-                    UnityEngine.Debug.LogError("可视TriggerRange子结点需要是item " + tmp.transform.name);
-                }
-
-                Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
-            }
+            UnityEngine.Debug.LogWarning("TriggerRange需要BoxCollider2D " + tmp.transform.name);
+        }
+        else
+        {
+            tmp.m_bcTriggerBox = bcd;
         }
 
-        TriggerBoss[] bosses = goTrigger.GetComponentsInChildren<TriggerBoss>(true);
-
-        foreach (TriggerBoss tmp in bosses)
+        if (tmp.transform.childCount > 0)
         {
-            tmp.m_iUniqueID = ++uniqueID;
-            if (tmp.transform.childCount > 0)
+            tmp.m_strItemName = tmp.transform.GetChild(0).name;
+
+            if (tmp.transform.childCount > 1)
             {
-                tmp.m_strBossName = tmp.transform.GetChild(0).name;
-
-                if (tmp.transform.childCount > 1)
-                {
-                    UnityEngine.Debug.LogWarning("TriggerBoss只能添加一个boss子结点 " + tmp.transform.name);
-                }
-
-                if (tmp.m_strBossName.Contains("boss_") == false)
-                {
-                    UnityEngine.Debug.LogError("TriggerBoss子结点需要是boss " + tmp.transform.name);
-                }
-
-                Util.DestroyAllChildrenImmediate(tmp.transform.gameObject);
+                UnityEngine.Debug.LogWarning("可视TriggerRange只能添加一个item子结点 " + tmp.transform.name);
             }
-            else
+
+            if (tmp.m_strItemName.Contains("item_") == false)
             {
-                UnityEngine.Debug.LogError("TriggerBoss需要添加boss子结点 " + tmp.transform.name);
+                UnityEngine.Debug.LogError("可视TriggerRange子结点需要是item " + tmp.transform.name);
             }
         }
+    }
 
-        foreach (Transform t in level.transform)
+    /// <summary>
+    /// 处理Boss触发器
+    /// </summary>
+    /// <param name="tmp"></param>
+    private void ProcessTriggerBoss(TriggerBoss tmp)
+    {
+        if (tmp.transform.childCount > 0)
         {
-            if (t.name.Equals("Player"))
-            {
-                level.m_PlayerPos = t.position;
+            tmp.m_strBossName = tmp.transform.GetChild(0).name;
 
-                Util.DestroyAllChildrenImmediate(t.gameObject);
+            if (tmp.transform.childCount > 1)
+            {
+                UnityEngine.Debug.LogWarning("TriggerBoss只能添加一个boss子结点 " + tmp.transform.name);
             }
+
+            if (tmp.m_strBossName.Contains("boss_") == false)
+            {
+                UnityEngine.Debug.LogError("TriggerBoss子结点需要是boss " + tmp.transform.name);
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("TriggerBoss需要添加boss子结点 " + tmp.transform.name);
         }
     }
 }

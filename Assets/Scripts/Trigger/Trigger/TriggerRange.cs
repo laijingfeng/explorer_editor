@@ -31,10 +31,8 @@ public class TriggerRange : TriggerBase
         m_strItemName = range.m_strItemName;
     }
 
-    public override void Start()
+    void Awake()
     {
-        base.Start();
-
         if (this.transform.GetComponent<BoxCollider2D>() != null)
         {
             this.transform.GetComponent<BoxCollider2D>().enabled = false;
