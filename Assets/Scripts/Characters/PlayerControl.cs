@@ -6,45 +6,30 @@ public class PlayerControl : MonoBehaviour
     /// <summary>
     /// 是否面朝右
     /// </summary>
-	[HideInInspector]
-	public bool facingRight = true;
-	
+    [HideInInspector]
+    public bool facingRight = true;
+
     /// <summary>
     /// 是否需要跳
     /// </summary>
     [HideInInspector]
-	public bool jump = false;
+    public bool jump = false;
 
-    /// <summary>
-    /// 移动力
-    /// </summary>
-	public float moveForce = 365f;
-	
-    /// <summary>
-    /// 移动最大速度
-    /// </summary>
-    public float maxSpeed = 5f;
-	
     /// <summary>
     /// 跳跃音效
     /// </summary>
     public AudioClip[] jumpClips;
-	
-    /// <summary>
-    /// 跳跃力
-    /// </summary>
-    public float jumpForce = 1000f;
 
     /// <summary>
     /// 嘲讽音效
     /// </summary>
-	public AudioClip[] taunts;
+    public AudioClip[] taunts;
 
     /// <summary>
     /// 嘲讽概率
     /// </summary>
-	public float tauntProbability = 50f;
-	
+    public float tauntProbability = 50f;
+
     /// <summary>
     /// 嘲讽延时
     /// </summary>
@@ -53,22 +38,17 @@ public class PlayerControl : MonoBehaviour
     /// <summary>
     /// 当前嘲讽
     /// </summary>
-	private int tauntIndex;
-	
+    private int tauntIndex;
+
     /// <summary>
     /// 地面检测
     /// </summary>
     private Transform groundCheck;
-	
+
     /// <summary>
     /// 角色的状态机
     /// </summary>
-	private Animator anim;
-
-    /// <summary>
-    /// 可连跳次数
-    /// </summary>
-    private int continueJumpCount = 1;
+    private Animator anim;
 
     /// <summary>
     /// 当前已连跳的次数
@@ -81,33 +61,21 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private float maxSpeedStartContinueJump = 6f;
 
-	void Awake()
-	{
-		groundCheck = transform.Find("groundCheck");
-		anim = GetComponent<Animator>();
+    void Awake()
+    {
+        groundCheck = transform.Find("groundCheck");
+        anim = GetComponent<Animator>();
         nowJumpedCount = 0;
-        continueJumpCount = 1;
-	}
+    }
 
     void Start()
     {
         CameraFollow.Instance.SetTarget(this.transform);
     }
 
-	void Update()
-	{
-        CheckJump();
-	}
-
-    /// <summary>
-    /// 连跳次数
-    /// </summary>
-    public int ContinueJumpCount
+    void Update()
     {
-        set
-        {
-            continueJumpCount = value;
-        }
+        CheckJump();
     }
 
     /// <summary>
@@ -115,8 +83,18 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void CheckJump()
     {
+        if (PlayerAttr.Instance.JumpCount <= 0)
+        {
+            return;
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
+            if(nowJumpedCount >= PlayerAttr.Instance.JumpCount)
+            {
+                nowJumpedCount = 0;
+            }
+
             if (nowJumpedCount == 0)
             {
                 bool grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
@@ -125,97 +103,97 @@ public class PlayerControl : MonoBehaviour
                     jump = true;
                 }
             }
-            else if(rigidbody2D.velocity.y < maxSpeedStartContinueJump)
+            else if (rigidbody2D.velocity.y < maxSpeedStartContinueJump)
             {
                 jump = true;
             }
         }
     }
 
-	void FixedUpdate ()
-	{
-		float h = Input.GetAxis("Horizontal");
+    void FixedUpdate()
+    {
+        float h = Input.GetAxis("Horizontal");
 
-		anim.SetFloat("Speed", Mathf.Abs(h));
+        anim.SetFloat("Speed", Mathf.Abs(h));
 
         //转向或者未达到最大速度
-        if (h * rigidbody2D.velocity.x < maxSpeed)
+        if (h * rigidbody2D.velocity.x < PlayerAttr.Instance.MaxSpeed)
         {
-            rigidbody2D.AddForce(Vector2.right * h * moveForce);
+            rigidbody2D.AddForce(Vector2.right * h * PlayerAttr.Instance.MoveForce);
         }
 
         //超过最大速度，设为最大速度
-        if (Mathf.Abs(rigidbody2D.velocity.x) > maxSpeed)
+        if (Mathf.Abs(rigidbody2D.velocity.x) > PlayerAttr.Instance.MaxSpeed)
         {
-            rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * maxSpeed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * PlayerAttr.Instance.MaxSpeed, rigidbody2D.velocity.y);
         }
 
-		if (h > 0 && !facingRight)
+        if (h > 0 && !facingRight)
         {
             Flip();
         }
         else if (h < 0 && facingRight)
-        {   
+        {
             Flip();
         }
 
-		if(jump)
-		{
-            nowJumpedCount = (nowJumpedCount + 1) % continueJumpCount;
+        if (jump)
+        {
+            nowJumpedCount ++;
 
-			anim.SetTrigger("Jump");
+            anim.SetTrigger("Jump");
 
             //播放音效
-			int i = Random.Range(0, jumpClips.Length);
-			AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
+            int i = Random.Range(0, jumpClips.Length);
+            AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
 
-			rigidbody2D.AddForce(new Vector2(0f, jumpForce));
-            
+            rigidbody2D.AddForce(new Vector2(0f, PlayerAttr.Instance.JumpForce));
+
             jump = false;
-		}
-	}
-	
-	/// <summary>
-	/// 翻转朝向
-	/// </summary>
-	void Flip ()
-	{
-		facingRight = !facingRight;
+        }
+    }
 
-		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
-		transform.localScale = theScale;
-	}
+    /// <summary>
+    /// 翻转朝向
+    /// </summary>
+    void Flip()
+    {
+        facingRight = !facingRight;
+
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
 
     /// <summary>
     /// <para>嘲讽</para>
     /// <para>加分的时候</para>
     /// </summary>
     /// <returns></returns>
-	public IEnumerator Taunt()
-	{
-		float tauntChance = Random.Range(0f, 100f);
-		if(tauntChance > tauntProbability)
-		{
-			yield return new WaitForSeconds(tauntDelay);
+    public IEnumerator Taunt()
+    {
+        float tauntChance = Random.Range(0f, 100f);
+        if (tauntChance > tauntProbability)
+        {
+            yield return new WaitForSeconds(tauntDelay);
 
-			if(!audio.isPlaying)
-			{
-				tauntIndex = TauntRandom();
+            if (!audio.isPlaying)
+            {
+                tauntIndex = TauntRandom();
 
-				audio.clip = taunts[tauntIndex];
-				audio.Play();
-			}
-		}
-	}
+                audio.clip = taunts[tauntIndex];
+                audio.Play();
+            }
+        }
+    }
 
     /// <summary>
     /// 随机嘲讽
     /// </summary>
     /// <returns></returns>
-	private int TauntRandom()
-	{
-		int i = Random.Range(0, taunts.Length);
+    private int TauntRandom()
+    {
+        int i = Random.Range(0, taunts.Length);
 
         if (i == tauntIndex)
         {
@@ -225,5 +203,5 @@ public class PlayerControl : MonoBehaviour
         {
             return i;
         }
-	}
+    }
 }

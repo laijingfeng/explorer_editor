@@ -25,14 +25,17 @@ public class Boss_001 : MonoBehaviour
     /// 受伤精灵图，可选
     /// </summary>
     public Sprite damagedEnemy;
+
 	public AudioClip[] deathClips;		// An array of audioclips that can play when the enemy dies.
 
     /// <summary>
     /// 死亡加分UI
     /// </summary>
-	public GameObject hundredPointsUI;	// A prefab of 100 that appears when the enemy dies.
-	public float deathSpinMin = -100f;			// A value to give the minimum amount of Torque when dying
-	public float deathSpinMax = 100f;			// A value to give the maximum amount of Torque when dying
+	public GameObject hundredPointsUI;
+	
+    public float deathSpinMin = -100f;			// A value to give the minimum amount of Torque when dying
+	
+    public float deathSpinMax = 100f;			// A value to give the maximum amount of Torque when dying
 
     /// <summary>
     /// Trigger

@@ -2066,7 +2066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_iUniqueID: 0
-  m_bIsPassTrigger: 1
+  m_bIsPassTrigger: 0
   m_Father: {fileID: 635461342}
   m_bcTriggerBox: {fileID: 0}
   m_strItemName: item_coin

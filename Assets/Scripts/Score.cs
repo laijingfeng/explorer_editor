@@ -32,7 +32,7 @@ public class Score : MonoBehaviour
         {
             playerControl.StartCoroutine(playerControl.Taunt());
 
-            playerControl.ContinueJumpCount = score / 5000 + 1;
+            //playerControl.ContinueJumpCount = score / 5000 + 1;
         }
 
 		previousScore = score;

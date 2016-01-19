@@ -10,7 +10,7 @@ public class FollowPlayer : MonoBehaviour
 
 	void Awake ()
 	{
-		//player = GameObject.FindGameObjectWithTag("Player").transform;
+		player = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
 	void Update ()

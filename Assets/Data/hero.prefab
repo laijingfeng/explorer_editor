@@ -137,6 +137,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400020}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400008}
   - 50: {fileID: 5000000}
   - 61: {fileID: 6100000}
   - 58: {fileID: 5800000}
@@ -227,7 +228,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 400020}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &400002
 Transform:
   m_ObjectHideFlags: 1
@@ -239,7 +240,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 400020}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!4 &400004
 Transform:
   m_ObjectHideFlags: 1
@@ -263,7 +264,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 400020}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &400010
 Transform:
   m_ObjectHideFlags: 1
@@ -311,7 +312,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 400020}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &400020
 Transform:
   m_ObjectHideFlags: 1
@@ -324,13 +325,13 @@ Transform:
   m_Children:
   - {fileID: 400026}
   - {fileID: 400012}
-  - {fileID: 400018}
   - {fileID: 400002}
+  - {fileID: 400018}
   - {fileID: 400004}
   - {fileID: 400022}
+  - {fileID: 400024}
   - {fileID: 400000}
   - {fileID: 400006}
-  - {fileID: 400024}
   - {fileID: 400010}
   - {fileID: 400028}
   - {fileID: 400016}
@@ -359,7 +360,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 400020}
-  m_RootOrder: 8
+  m_RootOrder: 6
 --- !u!4 &400026
 Transform:
   m_ObjectHideFlags: 1
@@ -636,13 +637,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   jump: 0
-  moveForce: 365
-  maxSpeed: 8
   jumpClips:
   - {fileID: 8300000, guid: 50a8d8a939a0f4e77a0dac6ecd2e582b, type: 3}
   - {fileID: 8300000, guid: fc55d077383484ac0ad66aa17fcd746f, type: 3}
   - {fileID: 8300000, guid: dafa1cc4eb8714341a7c595abfba35d8, type: 3}
-  jumpForce: 1000
   taunts:
   - {fileID: 8300000, guid: 27cbebf9d650249e5b032494eae5322c, type: 3}
   - {fileID: 8300000, guid: 986fa1b8984964da79d1be0597332fb2, type: 3}
@@ -689,6 +687,17 @@ MonoBehaviour:
   bombCount: 0
   bombsAway: {fileID: 8300000, guid: 2d487c0108565443ba2dea29b521e120, type: 3}
   bomb: {fileID: 100000, guid: 9f1c955688b614b259cf703b0b1c73d2, type: 2}
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ac575968ae110488cc1895c1e74cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
