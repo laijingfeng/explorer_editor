@@ -13,23 +13,6 @@ public class EditorGameApp : SingletonMono<EditorGameApp>
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-    void Start()
-    {
-        StopCoroutine("GameStart");
-        StartCoroutine("GameStart");
-    }
-
-    /// <summary>
-    /// 游戏开始
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator GameStart()
-    {
-        //等候一帧，让其他脚本的Start执行完
-        yield return new WaitForEndOfFrame();
-        yield break;
-    }
-
 	void Update() 
     {
         HandlePause();

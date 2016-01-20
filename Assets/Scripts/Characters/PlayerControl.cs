@@ -10,12 +10,6 @@ public class PlayerControl : MonoBehaviour
     public bool facingRight = true;
 
     /// <summary>
-    /// 是否需要跳
-    /// </summary>
-    [HideInInspector]
-    public bool jump = false;
-
-    /// <summary>
     /// 跳跃音效
     /// </summary>
     public AudioClip[] jumpClips;
@@ -83,6 +77,8 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void CheckJump()
     {
+        bool grounded = false;
+
         if (PlayerAttr.Instance.JumpCount <= 0)
         {
             return;
@@ -90,24 +86,73 @@ public class PlayerControl : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            if(nowJumpedCount >= PlayerAttr.Instance.JumpCount)
-            {
-                nowJumpedCount = 0;
-            }
+            bool canJump = false;
 
-            if (nowJumpedCount == 0)
+            if (nowJumpedCount == 0
+                || nowJumpedCount >= PlayerAttr.Instance.JumpCount)//第一次需要在地面//不要把nowJumpedCount置为false，空中吃药可以继续跳
             {
-                bool grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+                grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
                 if (grounded)
                 {
-                    jump = true;
+                    canJump = true;
+
+                    StopCoroutine("ListenOnSky");
+                    StartCoroutine("ListenOnSky");
                 }
             }
             else if (rigidbody2D.velocity.y < maxSpeedStartContinueJump)
             {
-                jump = true;
+                canJump = true;
+            }
+
+            if (canJump)
+            {
+                nowJumpedCount++;
+                
+                anim.SetTrigger("Jump");
+
+                //播放音效
+                int i = Random.Range(0, jumpClips.Length);
+                AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
+
+                rigidbody2D.AddForce(new Vector2(0f, PlayerAttr.Instance.JumpForce));
             }
         }
+    }
+
+    /// <summary>
+    /// 监听落地
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ListenOnGround()
+    {
+        while(true)
+        {
+            yield return new WaitForEndOfFrame();
+            if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) == true)
+            {
+                nowJumpedCount = 0;
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 监听腾空
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ListenOnSky()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) == false)
+            {
+                break;
+            }
+        }
+
+        yield return StartCoroutine("ListenOnGround");
     }
 
     void FixedUpdate()
@@ -135,21 +180,6 @@ public class PlayerControl : MonoBehaviour
         else if (h < 0 && facingRight)
         {
             Flip();
-        }
-
-        if (jump)
-        {
-            nowJumpedCount ++;
-
-            anim.SetTrigger("Jump");
-
-            //播放音效
-            int i = Random.Range(0, jumpClips.Length);
-            AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
-
-            rigidbody2D.AddForce(new Vector2(0f, PlayerAttr.Instance.JumpForce));
-
-            jump = false;
         }
     }
 

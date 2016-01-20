@@ -68,6 +68,14 @@ public class Boss_001 : MonoBehaviour
         m_TriggerBoss = this.GetComponentInParent<TriggerBoss>();
     }
 
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            Hurt();
+        }
+    }
+
 	void FixedUpdate ()
 	{
 		// Create an array of all the colliders in front of the enemy.

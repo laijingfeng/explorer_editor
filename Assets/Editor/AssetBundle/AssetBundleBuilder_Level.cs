@@ -123,17 +123,11 @@ public partial class AssetBundleBuilder : EditorWindow
     /// <param name="tmp"></param>
     private void ProcessTriggerRange(TriggerRange tmp)
     {
-        BoxCollider2D bcd = tmp.transform.GetComponent<BoxCollider2D>();
-
-        if (bcd == null)
+        if (tmp.transform.GetComponent<BoxCollider2D>() == null)
         {
             UnityEngine.Debug.LogWarning("TriggerRange需要BoxCollider2D " + tmp.transform.name);
         }
-        else
-        {
-            tmp.m_bcTriggerBox = bcd;
-        }
-
+        
         if (tmp.transform.childCount > 0)
         {
             tmp.m_strItemName = tmp.transform.GetChild(0).name;

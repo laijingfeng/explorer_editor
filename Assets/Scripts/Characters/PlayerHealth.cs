@@ -39,11 +39,11 @@ public class PlayerHealth : MonoBehaviour
 	void OnCollisionEnter2D (Collision2D col)
 	{
 		if(col.gameObject.tag == "Enemy"
-            || col.gameObject.tag == "Boss_001")
+            || col.gameObject.tag.StartsWith("Boss"))
 		{
 			if (Time.time > lastHitTime + repeatDamagePeriod) 
 			{
-				if(PlayerAttr.Instance.Blood > 0)
+				if(PlayerAttr.Instance.Blood > 1)
 				{
 					TakeDamage(col.transform); 
 					lastHitTime = Time.time; 
@@ -65,8 +65,11 @@ public class PlayerHealth : MonoBehaviour
 
 					GetComponent<PlayerControl>().enabled = false;
 
-					GetComponentInChildren<Gun>().enabled = false;
-
+                    if (GetComponentInChildren<Gun>())
+                    {
+                        GetComponentInChildren<Gun>().enabled = false;
+                    }
+					
 					anim.SetTrigger("Die");
 				}
 			}
@@ -78,7 +81,7 @@ public class PlayerHealth : MonoBehaviour
         PlayerAttr.Instance.Blood--;
 
 		// Make sure the player can't jump.
-		playerControl.jump = false;
+		//playerControl.jump = false;
 
 		// Create a vector that's from the enemy to the player with an upwards boost.
 		Vector3 hurtVector = transform.position - enemy.position + Vector3.up * 5f;

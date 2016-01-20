@@ -60,37 +60,6 @@ public class EntryManager : SingletonMono<EntryManager>
         go.transform.localPosition = Vector3.zero;
     }
 
-    /// <summary>
-    /// 创建触发器
-    /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
-    public TriggerBase CreateTrigger(TriggerBase config)
-    {
-        GameObject go = new GameObject(string.Format("Trigger_{0}", config.m_iUniqueID));
-        go.transform.parent = transform;
-        go.transform.position = config.transform.position;
-
-        TriggerBase trigger = null;
-
-        if (config is TriggerTimer)
-        {
-            trigger = go.AddComponent<TriggerTimer>();
-        }
-        else if(config is TriggerRange)
-        {
-            trigger = go.AddComponent<TriggerRange>();
-        }
-        else if (config is TriggerBoss)
-        {
-            trigger = go.AddComponent<TriggerBoss>();
-        }
-
-        trigger.Init(config);
-
-        return trigger;
-    }
-
     public void Clear()
     {
         Util.DestroyAllChildrenImmediate(gameObject);
