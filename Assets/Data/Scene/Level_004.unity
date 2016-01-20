@@ -301,6 +301,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 54969470}
   - 114: {fileID: 54969478}
+  - 114: {fileID: 54969479}
   - 50: {fileID: 54969477}
   - 61: {fileID: 54969476}
   - 58: {fileID: 54969475}
@@ -327,13 +328,13 @@ Transform:
   m_Children:
   - {fileID: 319628877}
   - {fileID: 555371560}
-  - {fileID: 1998847217}
   - {fileID: 1832213191}
+  - {fileID: 1998847217}
   - {fileID: 1567104346}
   - {fileID: 2030284064}
+  - {fileID: 200207368}
   - {fileID: 1610951551}
   - {fileID: 1236721801}
-  - {fileID: 200207368}
   - {fileID: 516502871}
   - {fileID: 244477971}
   - {fileID: 517330721}
@@ -505,13 +506,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   jump: 0
-  moveForce: 365
-  maxSpeed: 8
   jumpClips:
   - {fileID: 8300000, guid: 50a8d8a939a0f4e77a0dac6ecd2e582b, type: 3}
   - {fileID: 8300000, guid: fc55d077383484ac0ad66aa17fcd746f, type: 3}
   - {fileID: 8300000, guid: dafa1cc4eb8714341a7c595abfba35d8, type: 3}
-  jumpForce: 1000
   taunts:
   - {fileID: 8300000, guid: 27cbebf9d650249e5b032494eae5322c, type: 3}
   - {fileID: 8300000, guid: 986fa1b8984964da79d1be0597332fb2, type: 3}
@@ -523,6 +521,23 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ddd0ca15e5d0a42b98f08337c1690bb1, type: 3}
   tauntProbability: 50
   tauntDelay: 1
+--- !u!114 &54969479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400008, guid: 6aa187bc6339843479c03fdfd71404a3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1380786176}
+  m_GameObject: {fileID: 54969469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1719818342, guid: 12831666d33e1dd44a3d30d93a4031d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_iBlood: 1
+  m_iJumpCount: 2
+  m_fJumpForce: 1000
+  m_fMaxSpeed: 5
+  m_fMoveForce: 365
 --- !u!1 &116240079
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +713,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 54969470}
-  m_RootOrder: 8
+  m_RootOrder: 6
 --- !u!212 &200207369
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2322,7 +2337,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 54969470}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!212 &1236721802
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2807,7 +2822,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 54969470}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!212 &1610951552
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3156,7 +3171,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 54969470}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!212 &1832213192
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3486,7 +3501,7 @@ Transform:
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children: []
   m_Father: {fileID: 54969470}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!212 &1998847218
 SpriteRenderer:
   m_ObjectHideFlags: 0
